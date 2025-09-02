@@ -11,10 +11,19 @@ interface ReCaptchaProps {
   size?: 'normal' | 'compact';
 }
 
+interface ReCaptchaOptions {
+  sitekey: string;
+  callback: (token: string) => void;
+  'error-callback'?: () => void;
+  'expired-callback'?: () => void;
+  theme?: 'light' | 'dark';
+  size?: 'normal' | 'compact';
+}
+
 declare global {
   interface Window {
     grecaptcha: {
-      render: (container: string | Element, options: any) => number;
+      render: (container: string | Element, options: ReCaptchaOptions) => number;
       reset: (widgetId: number) => void;
       getResponse: (widgetId: number) => string;
       execute: (widgetId: number) => void;

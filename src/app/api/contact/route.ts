@@ -47,7 +47,7 @@ export async function POST(request: NextRequest) {
     try {
 
       
-      const emailResult = await resend.emails.send({
+      await resend.emails.send({
         from: 'Contact Devi Yoga <contact@deviyogaparis.fr>', // Remplacez par votre domaine vérifié
         to: 'contact@deviyogaparis.fr', // Votre email où recevoir les messages
         subject: `🧘 Nouveau message de ${name}`,

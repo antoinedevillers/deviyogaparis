@@ -111,7 +111,7 @@ async function sendConfirmationEmail(
   sessionId: string
 ) {
   try {
-    const emailResult = await resend.emails.send({
+    await resend.emails.send({
       from: 'Devi Yoga Paris <contact@deviyogaparis.fr>', // Même adresse que le formulaire
       to: email,
       subject: `✅ Confirmation de réservation - ${courseInfo.type}`,

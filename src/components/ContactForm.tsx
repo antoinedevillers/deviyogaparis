@@ -42,7 +42,7 @@ export default function ContactForm() {
           } else {
             alert(result.error || 'Une erreur est survenue.');
           }
-        } catch (err) {
+        } catch {
           alert('Une erreur est survenue. Réessayez plus tard.');
         } finally {
           setIsSubmitting(false);

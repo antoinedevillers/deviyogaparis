@@ -1,25 +1,26 @@
 # 🧘‍♀️ Devi Yoga Paris - Site Web
 
-Site web moderne et responsive pour Devi, professeure de yoga à Paris et Vincennes. Une landing page SEO-optimisée développée avec Next.js 14 et Tailwind CSS.
+Site web professionnel pour Devi, professeure de yoga à Paris et ses alentours. Plateforme complète avec réservation et paiement en ligne, développée avec Next.js 15 et TypeScript.
 
 ## ✨ Fonctionnalités
 
-- **🎨 Design moderne** : Interface élégante avec couleurs douces et typographie soignée
-- **📱 Responsive** : Optimisé pour tous les appareils (mobile-first)
-- **⚡ Performance** : Next.js 14 avec App Router pour des performances optimales
-- **🔍 SEO-friendly** : Optimisé pour les moteurs de recherche avec meta tags complets
-- **📅 Planning interactif** : Système de réservation en ligne
-- **✉️ Formulaire de contact** : API route fonctionnelle pour les messages
-- **🎯 One-page** : Navigation fluide avec ancres
-- **🌐 Déployable sur Vercel** : Configuration prête pour la production
+- **🎨 Design moderne** : Interface élégante responsive (mobile-first)
+- **💳 Paiements sécurisés** : Intégration Stripe avec checkout complet
+- **📧 Emails automatiques** : Confirmations de réservation via Resend
+- **🛡️ Anti-spam** : Protection reCAPTCHA sur formulaires
+- **📅 Planning interactif** : Réservation en ligne avec paiement
+- **🔍 SEO optimisé** : Meta tags, sitemap, robots.txt
+- **⚡ Performance** : Next.js 15 avec optimisations production
+- **🎯 TypeScript** : Code type-safe et maintenable
 
 ## 🏗️ Tech Stack
 
-- **Framework** : Next.js 14 (App Router)
-- **Styling** : Tailwind CSS
+- **Framework** : Next.js 15 (App Router) + TypeScript
+- **Styling** : Tailwind CSS v4
+- **Paiements** : Stripe (checkout + webhooks)
+- **Emails** : Resend (confirmations automatiques)
+- **Sécurité** : Google reCAPTCHA + headers sécurisés
 - **Typographie** : Google Fonts (Lato + Playfair Display)
-- **Déploiement** : Vercel
-- **Language** : TypeScript
 
 ## 🚀 Installation
 
@@ -34,13 +35,19 @@ Site web moderne et responsive pour Devi, professeure de yoga à Paris et Vincen
    npm install
    ```
 
-3. **Lancez le serveur de développement**
+3. **Configurez les variables d'environnement**
+   ```bash
+   cp .env.example .env.local
+   # Éditez .env.local avec vos clés API
+   ```
+
+4. **Lancez le serveur de développement**
    ```bash
    npm run dev
    ```
 
-4. **Ouvrez votre navigateur**
-   Accédez à [http://localhost:3000](http://localhost:3000)
+5. **Ouvrez votre navigateur**
+   Accédez à [http://localhost:3002](http://localhost:3002)
 
 ## 📁 Structure du projet
 
@@ -82,24 +89,43 @@ src/
 
 ## 🔧 Configuration
 
-### Formulaire de contact
-Le formulaire utilise une API route Next.js (`/api/contact`). Pour la production, intégrez votre service d'email préféré :
-- Resend
-- SendGrid  
-- Nodemailer
-- Mailgun
+### Variables d'environnement requises
+```bash
+# Stripe (paiements)
+STRIPE_SECRET_KEY=sk_...
+NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=pk_...
+STRIPE_WEBHOOK_SECRET=whsec_...
 
-### Images
-Remplacez les images Unsplash par vos propres photos dans le dossier `public/images/`
+# Resend (emails)
+RESEND_API_KEY=re_...
 
-### SEO
-Modifiez les meta tags dans `src/app/layout.tsx` selon vos besoins.
+# reCAPTCHA (anti-spam)
+NEXT_PUBLIC_RECAPTCHA_SITE_KEY=6Lc...
+RECAPTCHA_SECRET_KEY=6Lc...
 
-## 🚀 Déploiement sur Vercel
+# URL de l'application
+NEXT_PUBLIC_URL=https://votre-domaine.com
+```
 
+Consultez les guides de configuration :
+- [Configuration reCAPTCHA](./RECAPTCHA_SETUP.md)
+- [Checklist Production](./PRODUCTION_CHECKLIST.md)
+
+## 🚀 Déploiement
+
+### Production
+```bash
+# Build de production
+npm run build
+
+# Lancer en production  
+npm start
+```
+
+### Vercel
 1. **Connectez votre repository GitHub à Vercel**
-2. **Les variables d'environnement sont optionnelles** (pour la démo)
-3. **Le site se déploie automatiquement** grâce à la configuration `vercel.json`
+2. **Configurez les variables d'environnement** dans le dashboard Vercel
+3. **Le site se déploie automatiquement**
 
 Ou en ligne de commande :
 ```bash
