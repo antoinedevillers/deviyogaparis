@@ -103,9 +103,9 @@ export default function ContactForm() {
       <div className="md:col-span-2">
         <button
           type="submit"
-          disabled={isSubmitting || (!recaptchaToken && siteKey)}
+          disabled={isSubmitting || (!recaptchaToken && !!siteKey)}
           className={`w-full md:w-auto inline-flex items-center justify-center rounded-xl px-6 py-3 text-sm md:text-base font-medium transition-colors
-            ${isSubmitting || (!recaptchaToken && siteKey)
+            ${isSubmitting || (!recaptchaToken && !!siteKey)
               ? 'bg-gray-300 text-gray-500 cursor-not-allowed' 
               : 'bg-emerald-300 text-gray-900 hover:bg-emerald-200 focus:outline-none focus:ring-2 focus:ring-emerald-400'
             }`}
