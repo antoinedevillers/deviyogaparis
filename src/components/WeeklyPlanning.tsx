@@ -185,8 +185,6 @@ export default function WeeklyPlanning() {
                                 }
                               }),
                             });
-
-                            console.log('📡 Réponse reçue, status:', response.status);
                             
                             if (!response.ok) {
                               const errorData = await response.text();
@@ -196,10 +194,8 @@ export default function WeeklyPlanning() {
                             }
 
                             const result = await response.json();
-                            console.log('📦 Données reçues:', result);
                             
                             if (result.url) {
-                              console.log('🔗 Ouverture dans un nouvel onglet:', result.url);
                               window.open(result.url, '_blank');
                             } else {
                               console.error('❌ Pas d\'URL dans la réponse');

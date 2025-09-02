@@ -72,6 +72,16 @@ export async function POST(request: NextRequest) {
       },
       customer_creation: 'always',
       billing_address_collection: 'required',
+      phone_number_collection: {
+        enabled: true,
+      },
+      custom_fields: [
+        {
+          key: "nom_complet",
+          label: { type: "custom", custom: "Nom complet" },
+          type: "text",
+        },
+      ],
     });
 
     return NextResponse.json({ 
