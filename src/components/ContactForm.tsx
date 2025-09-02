@@ -8,7 +8,6 @@ export default function ContactForm() {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const siteKey = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY;
-  console.log('siteKey:', siteKey);
   return (
     <form
       className="grid gap-4 md:grid-cols-2"
