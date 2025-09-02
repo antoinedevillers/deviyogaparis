@@ -43,19 +43,23 @@ export default function ReCaptcha({
   const widgetIdRef = useRef<number | null>(null);
 
   useEffect(() => {
-    if (!containerRef.current) return;
+    if (!containerRef.current || widgetIdRef.current) return;
 
     // Fonction pour initialiser reCAPTCHA
     const initRecaptcha = () => {
       if (window.grecaptcha && containerRef.current && !widgetIdRef.current) {
-        widgetIdRef.current = window.grecaptcha.render(containerRef.current, {
-          sitekey: siteKey,
-          callback: onVerify,
-          'error-callback': onError,
-          'expired-callback': onExpired,
-          theme,
-          size,
-        });
+        try {
+          widgetIdRef.current = window.grecaptcha.render(containerRef.current, {
+            sitekey: siteKey,
+            callback: onVerify,
+            'error-callback': onError,
+            'expired-callback': onExpired,
+            theme,
+            size,
+          });
+        } catch (error) {
+          console.error('Erreur reCAPTCHA:', error);
+        }
       }
     };
 
@@ -73,7 +77,18 @@ export default function ReCaptcha({
 
       return () => clearInterval(interval);
     }
-  }, [siteKey, onVerify, onError, onExpired, theme, size]);
+
+    // Cleanup function
+    return () => {
+      if (widgetIdRef.current !== null && window.grecaptcha) {
+        try {
+          window.grecaptcha.reset(widgetIdRef.current);
+        } catch (error) {
+          console.error('Erreur reset reCAPTCHA:', error);
+        }
+      }
+    };
+  }, [siteKey]);
 
   return <div ref={containerRef} className="g-recaptcha" />;
 }

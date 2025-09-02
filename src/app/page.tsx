@@ -238,7 +238,7 @@ export default function Page() {
 
       {/* Contact */}
       <Section id="contact" bg="bg-emerald-50/40">
-        <H2 kicker="Réserver / Contact">Contact</H2>
+        <H2 kicker="Contact">Contact</H2>
         <Card className="p-6">
           <ContactForm />
           <div className="mt-6 flex items-center justify-center">
