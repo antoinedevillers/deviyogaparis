@@ -166,11 +166,9 @@ export default function WeeklyPlanning() {
                       <Button
                         onClick={async (e) => {
                           e.preventDefault();
-                          console.log('🔍 DEBUG: Bouton Réserver cliqué');
-                          console.log('Données du cours:', course);
+
                           
                           try {
-                            console.log('🚀 Envoi de la requête vers /api/create-checkout-session...');
                             
                             const response = await fetch('/api/create-checkout-session', {
                               method: 'POST',

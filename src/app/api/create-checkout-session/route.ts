@@ -72,31 +72,6 @@ export async function POST(request: NextRequest) {
       },
       customer_creation: 'always',
       billing_address_collection: 'required',
-      phone_number_collection: {
-        enabled: true,
-      },
-      // Collecte explicite du nom et prénom
-      custom_fields: [
-        {
-          key: "nom_complet",
-          label: { type: "custom", custom: "Nom complet" },
-          type: "text",
-        },
-      ],
-      // Configuration pour un meilleur affichage du nom
-      invoice_creation: {
-        enabled: true,
-        invoice_data: {
-          description: `Réservation - ${cours} le ${day} ${date}`,
-          metadata: {
-            course_type: cours,
-            course_date: date,
-            course_day: day,
-            course_time: horaire,
-            course_location: lieu,
-          },
-        },
-      },
     });
 
     return NextResponse.json({ 
@@ -105,7 +80,6 @@ export async function POST(request: NextRequest) {
     });
 
   } catch (error) {
-    console.error('Stripe error:', error);
     return NextResponse.json(
       { error: 'Error creating checkout session' },
       { status: 500 }
