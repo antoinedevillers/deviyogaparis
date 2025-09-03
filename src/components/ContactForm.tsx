@@ -18,7 +18,6 @@ export default function ContactForm() {
           src="https://www.google.com/recaptcha/api.js?render=explicit"
           strategy="lazyOnload"
           onLoad={() => {
-            console.log('✅ reCAPTCHA script loaded');
             setScriptLoaded(true);
           }}
           onError={() => {

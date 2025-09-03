@@ -62,7 +62,6 @@ export default function ReCaptcha({
           theme,
           size,
         });
-        console.log('✅ reCAPTCHA initialized successfully');
       } catch (error) {
         console.error('❌ reCAPTCHA initialization error:', error);
         initializedRef.current = false;
