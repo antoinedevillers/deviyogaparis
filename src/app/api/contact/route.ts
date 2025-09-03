@@ -21,7 +21,10 @@ const resend = new Resend(process.env.RESEND_API_KEY);
 export async function POST(request: NextRequest) {
   try {
     // Rate limiting par IP
-    const ip = request.ip ?? request.headers.get('x-forwarded-for') ?? 'unknown';
+    const ip = request.headers.get('x-forwarded-for') || 
+               request.headers.get('x-real-ip') ||
+               request.headers.get('cf-connecting-ip') || // Cloudflare
+               'unknown';
     if (!rateLimit(ip, 3, 60000)) { // 3 requêtes par minute
       return NextResponse.json(
         { error: 'Trop de tentatives. Veuillez patienter avant de réessayer.' },
