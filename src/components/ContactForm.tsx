@@ -1,14 +1,31 @@
 'use client';
 
 import { useState } from 'react';
+import Script from 'next/script';
 import ReCaptcha from './ReCaptcha';
 
 export default function ContactForm() {
   const [recaptchaToken, setRecaptchaToken] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [scriptLoaded, setScriptLoaded] = useState(false);
 
   const siteKey = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY;
+  
   return (
+    <>
+      {siteKey && (
+        <Script
+          src="https://www.google.com/recaptcha/api.js?render=explicit"
+          strategy="lazyOnload"
+          onLoad={() => {
+            console.log('✅ reCAPTCHA script loaded');
+            setScriptLoaded(true);
+          }}
+          onError={() => {
+            console.error('❌ reCAPTCHA script failed to load');
+          }}
+        />
+      )}
     <form
       className="grid gap-4 md:grid-cols-2"
       onSubmit={async (e) => {
@@ -87,7 +104,7 @@ export default function ContactForm() {
       
       {/* Google reCAPTCHA */}
       <div className="md:col-span-2 flex justify-center">
-        {siteKey ? (
+        {siteKey && scriptLoaded ? (
           <ReCaptcha
             siteKey={siteKey}
             onVerify={(token) => setRecaptchaToken(token)}
@@ -96,6 +113,8 @@ export default function ContactForm() {
             theme="light"
             size="normal"
           />
+        ) : siteKey && !scriptLoaded ? (
+          <p className="text-gray-500 text-sm">Chargement reCAPTCHA...</p>
         ) : (
           <p className="text-red-500 text-sm">reCAPTCHA non configuré</p>
         )}
@@ -115,5 +134,6 @@ export default function ContactForm() {
         </button>
       </div>
     </form>
+    </>
   );
 }

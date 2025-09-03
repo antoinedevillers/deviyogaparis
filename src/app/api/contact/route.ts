@@ -2,11 +2,33 @@ import { NextRequest, NextResponse } from 'next/server';
 import { Resend } from 'resend';
 import type { ApiError } from '@/types';
 import { verifyRecaptchaToken } from '@/lib/recaptcha';
+import { rateLimit } from '@/lib/rate-limiter';
+
+// Fonction pour échapper le HTML (protection XSS)
+function escapeHtml(text: string): string {
+  const map: { [key: string]: string } = {
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#039;'
+  };
+  return text.replace(/[&<>"']/g, (m) => map[m]);
+}
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
 export async function POST(request: NextRequest) {
   try {
+    // Rate limiting par IP
+    const ip = request.ip ?? request.headers.get('x-forwarded-for') ?? 'unknown';
+    if (!rateLimit(ip, 3, 60000)) { // 3 requêtes par minute
+      return NextResponse.json(
+        { error: 'Trop de tentatives. Veuillez patienter avant de réessayer.' },
+        { status: 429 }
+      );
+    }
+
     const body = await request.json();
     const { name, email, phone, message, recaptchaToken } = body;
 
@@ -56,16 +78,16 @@ export async function POST(request: NextRequest) {
             <h2 style="color: #10b981; margin-bottom: 20px;">📩 Nouveau message de contact</h2>
             
             <div style="background: #f8f9fa; padding: 20px; border-radius: 8px; margin-bottom: 20px;">
-              <p><strong>👤 Nom:</strong> ${name}</p>
-              <p><strong>📧 Email:</strong> <a href="mailto:${email}" style="color: #10b981;">${email}</a></p>
-              <p><strong>📱 Téléphone:</strong> ${phone || 'Non renseigné'}</p>
+              <p><strong>👤 Nom:</strong> ${escapeHtml(name)}</p>
+              <p><strong>📧 Email:</strong> <a href="mailto:${escapeHtml(email)}" style="color: #10b981;">${escapeHtml(email)}</a></p>
+              <p><strong>📱 Téléphone:</strong> ${escapeHtml(phone || 'Non renseigné')}</p>
               <p><strong>📅 Date:</strong> ${new Date().toLocaleString('fr-FR')}</p>
             </div>
             
             <div style="background: #ffffff; border: 1px solid #e5e7eb; padding: 20px; border-radius: 8px;">
               <h3 style="color: #374151; margin-top: 0;">💬 Message:</h3>
               <div style="color: #4b5563; line-height: 1.6;">
-                ${message.replace(/\n/g, '<br>')}
+                ${escapeHtml(message).replace(/\n/g, '<br>')}
               </div>
             </div>
             

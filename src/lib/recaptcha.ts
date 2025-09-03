@@ -21,13 +21,16 @@ export async function verifyRecaptchaToken(token: string): Promise<boolean> {
 
     const data = await response.json();
     
-    console.log('reCAPTCHA verification:', { 
-      success: data.success,
-      score: data.score,
-      action: data.action,
-      hostname: data.hostname,
-      error_codes: data['error-codes'] 
-    });
+    // Log uniquement en développement
+    if (process.env.NODE_ENV === 'development') {
+      console.log('reCAPTCHA verification:', { 
+        success: data.success,
+        score: data.score,
+        action: data.action,
+        hostname: data.hostname,
+        error_codes: data['error-codes'] 
+      });
+    }
     
     return data.success === true;
   } catch (error) {

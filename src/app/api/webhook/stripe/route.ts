@@ -4,6 +4,18 @@ import Stripe from 'stripe';
 import { Resend } from 'resend';
 import type { CourseInfo, ApiError, StripeError } from '@/types';
 
+// Fonction pour échapper le HTML (protection XSS)
+function escapeHtml(text: string): string {
+  const map: { [key: string]: string } = {
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#039;'
+  };
+  return text.replace(/[&<>"']/g, (m) => map[m]);
+}
+
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
   apiVersion: '2025-08-27.basil',
 });
@@ -143,17 +155,17 @@ async function sendConfirmationEmail(
               
               <div style="display: flex; margin-bottom: 15px;">
                 <span style="color: #6b7280; width: 120px; display: inline-block;">Cours :</span>
-                <span style="color: #111827; font-weight: 600;">${courseInfo.type}</span>
+                <span style="color: #111827; font-weight: 600;">${escapeHtml(courseInfo.type)}</span>
               </div>
               
               <div style="display: flex; margin-bottom: 15px;">
                 <span style="color: #6b7280; width: 120px; display: inline-block;">Date :</span>
-                <span style="color: #111827; font-weight: 600;">${courseInfo.day} ${courseInfo.date}</span>
+                <span style="color: #111827; font-weight: 600;">${escapeHtml(courseInfo.day)} ${escapeHtml(courseInfo.date)}</span>
               </div>
               
               <div style="display: flex; margin-bottom: 15px;">
                 <span style="color: #6b7280; width: 120px; display: inline-block;">Horaire :</span>
-                <span style="color: #111827; font-weight: 600;">${courseInfo.time}</span>
+                <span style="color: #111827; font-weight: 600;">${escapeHtml(courseInfo.time)}</span>
               </div>
               
               <div style="display: flex; margin-bottom: 15px;">
