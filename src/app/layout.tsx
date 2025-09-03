@@ -2,28 +2,28 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Cours de Yoga Paris & Vincennes | Professeur de Yoga Devi",
-  description: "Cours de yoga à Paris et Vincennes avec Devi. Professeur de yoga certifiée, séances adaptées à tous niveaux. Réservez votre cours dès aujourd'hui.",
+  title: "Cours de Yoga Paris  | Professeur de Yoga Devi",
+  description: "Cours de yoga à Paris avec Devi. Professeur de yoga certifiée, séances adaptées à tous niveaux. Réservez votre cours dès aujourd'hui.",
   keywords: "cours de yoga Paris, professeur de yoga Paris, yoga débutants Paris, cours de yoga Vincennes, professeur de yoga Vincennes, yoga collectif Vincennes, yoga particulier, cours de yoga à domicile",
   authors: [{ name: "Devi Yoga" }],
   openGraph: {
-    title: "Cours de Yoga Paris & Vincennes | Professeur de Yoga Devi",
-    description: "Cours de yoga à Paris et Vincennes avec Devi. Professeur de yoga certifiée, séances adaptées à tous niveaux.",
+    title: "Cours de Yoga Paris | Professeur de Yoga Devi",
+    description: "Cours de yoga à Paris avec Devi. Professeur de yoga certifié, séances adaptées à tous niveaux.",
     type: "website",
     locale: "fr_FR",
     siteName: "Devi Yoga Paris",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Cours de Yoga Paris & Vincennes | Professeur de Yoga Devi",
-    description: "Cours de yoga à Paris et Vincennes avec Devi. Professeur de yoga certifiée, séances adaptées à tous niveaux.",
+    title: "Cours de Yoga Paris | Professeur de Yoga Devi",
+    description: "Cours de yoga à Paris avec Devi. Professeur de yoga certifié, séances adaptées à tous niveaux.",
   },
   robots: {
     index: true,
     follow: true,
   },
   alternates: {
-    canonical: "https://deviyoga.com",
+    canonical: "https://deviyogaparis.fr",
   },
 };
 
@@ -38,6 +38,10 @@ export default function RootLayout({
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta name="theme-color" content="#10b981" />
         <link rel="manifest" href="/manifest.json" />
+        <link rel="icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+        <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link 
@@ -49,6 +53,17 @@ export default function RootLayout({
           async 
           defer
         ></script>
+        <script async src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GA_ID}`}></script>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', '${process.env.NEXT_PUBLIC_GA_ID}');
+            `,
+          }}
+        />
       </head>
       <body className="antialiased">
         {children}

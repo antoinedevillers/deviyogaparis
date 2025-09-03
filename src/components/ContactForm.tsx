@@ -87,7 +87,7 @@ export default function ContactForm() {
       
       {/* Google reCAPTCHA */}
       <div className="md:col-span-2 flex justify-center">
-        {siteKey && (
+        {siteKey ? (
           <ReCaptcha
             siteKey={siteKey}
             onVerify={(token) => setRecaptchaToken(token)}
@@ -96,6 +96,8 @@ export default function ContactForm() {
             theme="light"
             size="normal"
           />
+        ) : (
+          <p className="text-red-500 text-sm">reCAPTCHA non configuré</p>
         )}
       </div>
 

@@ -47,7 +47,7 @@ export default function ReCaptcha({
 
     // Fonction pour initialiser reCAPTCHA
     const initRecaptcha = () => {
-      if (window.grecaptcha && containerRef.current && !widgetIdRef.current) {
+      if (window.grecaptcha && containerRef.current && !widgetIdRef.current && siteKey) {
         try {
           widgetIdRef.current = window.grecaptcha.render(containerRef.current, {
             sitekey: siteKey,
@@ -59,6 +59,7 @@ export default function ReCaptcha({
           });
         } catch (error) {
           console.error('Erreur reCAPTCHA:', error);
+          if (onError) onError();
         }
       }
     };
