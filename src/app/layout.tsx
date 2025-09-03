@@ -45,11 +45,13 @@ export default function RootLayout({
           href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&family=Playfair+Display:wght@400;500;700&display=swap" 
           rel="stylesheet" 
         />
-        <script 
-          src="https://www.google.com/recaptcha/api.js" 
-          async 
-          defer
-        ></script>
+        {process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY && (
+          <script 
+            src="https://www.google.com/recaptcha/api.js" 
+            async 
+            defer
+          ></script>
+        )}
 
         <script async src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GA_ID}`}></script>
         <script

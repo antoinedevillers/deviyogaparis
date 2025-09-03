@@ -43,7 +43,7 @@ export default function ReCaptcha({
   const widgetIdRef = useRef<number | null>(null);
 
   useEffect(() => {
-    if (!containerRef.current || widgetIdRef.current) return;
+    if (!containerRef.current || widgetIdRef.current || !siteKey) return;
 
     // Fonction pour initialiser reCAPTCHA
     const initRecaptcha = () => {
