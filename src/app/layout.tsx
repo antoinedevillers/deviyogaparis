@@ -50,6 +50,7 @@ export default function RootLayout({
           async 
           defer
         ></script>
+
         <script async src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GA_ID}`}></script>
         <script
           dangerouslySetInnerHTML={{
