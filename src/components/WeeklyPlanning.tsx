@@ -196,7 +196,7 @@ export default function WeeklyPlanning() {
                             const result = await response.json();
                             
                             if (result.url) {
-                              window.open(result.url, '_blank');
+                              window.location.href = result.url;
                             } else {
                               console.error('❌ Pas d\'URL dans la réponse');
                               alert('Erreur lors de la création de la session de paiement');

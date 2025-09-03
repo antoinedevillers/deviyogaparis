@@ -158,7 +158,7 @@ async function sendConfirmationEmail(
               
               <div style="display: flex; margin-bottom: 15px;">
                 <span style="color: #6b7280; width: 120px; display: inline-block;">Lieu :</span>
-                <span style="color: #111827; font-weight: 600;">${courseInfo.location} - Studio Maison Née</span>
+                <span style="color: #111827; font-weight: 600;">25 rue Beccaria, 75012 Paris - Studio Maison Née - </span>
               </div>
               
               <div style="display: flex; margin-bottom: 15px;">
@@ -174,6 +174,7 @@ async function sendConfirmationEmail(
                 <li style="margin-bottom: 5px;">Arrivez 5-10 minutes avant le début</li>
                 <li style="margin-bottom: 5px;">Portez des vêtements confortables</li>
                 <li style="margin-bottom: 5px;">Le matériel est fourni (tapis, coussins)</li>
+                <li style="margin-bottom: 5px;">CODE Porte d'Entrée : 1810</li>
               </ul>
             </div>
 
@@ -185,7 +186,7 @@ async function sendConfirmationEmail(
               </p>
 
               <p style="color: #6b7280; margin: 15px 0 0 0;">
-                📍 <a href="https://instagram.com/devi_yoga_paris" style="color: #10b981; text-decoration: none;">@devi_yoga_paris</a>
+               <a href="https://instagram.com/devi_yoga_paris" style="color: #10b981; text-decoration: none;">@devi_yoga_paris</a>
               </p>
             </div>
 
