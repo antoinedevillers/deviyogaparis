@@ -71,6 +71,7 @@ export async function POST(request: NextRequest) {
         
 
         await sendConfirmationEmail(testEmail, testName, testCourse, session.id);
+        await sendAdminNotification(testEmail, testName, testCourse, session.id);
 
         return NextResponse.json({ received: true, test: true });
       }
@@ -101,6 +102,7 @@ export async function POST(request: NextRequest) {
       
       try {
         await sendConfirmationEmail(customerEmail, customerName, courseInfo, session.id);
+        await sendAdminNotification(customerEmail, customerName, courseInfo, session.id);
       } catch (emailError) {
         console.error('❌ Erreur envoi email:', emailError);
         // Ne pas faire échouer le webhook pour une erreur d'email
@@ -221,6 +223,125 @@ async function sendConfirmationEmail(
   } catch (error: unknown) {
     const apiError = error as ApiError;
     console.error('❌ Erreur envoi email confirmation:', apiError.message);
+    throw error;
+  }
+}
+
+// Fonction pour envoyer l'email de notification à l'administrateur
+async function sendAdminNotification(
+  customerEmail: string,
+  customerName: string,
+  courseInfo: CourseInfo,
+  sessionId: string
+) {
+  try {
+    await resend.emails.send({
+      from: 'Devi Yoga Paris <contact@deviyogaparis.fr>',
+      to: 'contact@deviyogaparis.fr', // Email de l'administrateur
+      subject: `🎯 Nouvelle réservation - ${courseInfo.type}`,
+      html: `
+        <!DOCTYPE html>
+        <html>
+        <head>
+          <meta charset="utf-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+          <title>Nouvelle réservation</title>
+        </head>
+        <body style="margin: 0; padding: 0; font-family: 'Helvetica Neue', Arial, sans-serif; background-color: #f7f9fc;">
+          <div style="max-width: 600px; margin: 0 auto; background-color: white; padding: 40px 20px;">
+
+            <!-- Header -->
+            <div style="text-align: center; margin-bottom: 40px;">
+              <h1 style="color: #10b981; font-size: 28px; margin: 0;">🧘‍♀️ Devi Yoga Paris</h1>
+              <p style="color: #6b7280; margin: 10px 0 0 0;">Administration</p>
+            </div>
+
+            <!-- Message principal -->
+            <div style="background-color: #dbeafe; border-left: 4px solid #3b82f6; padding: 20px; margin-bottom: 30px;">
+              <h2 style="color: #1e40af; font-size: 24px; margin: 0 0 10px 0;">🎯 Nouvelle réservation</h2>
+              <p style="color: #1d4ed8; font-size: 16px; margin: 0;">Un client vient d'effectuer une réservation.</p>
+            </div>
+
+            <!-- Informations client -->
+            <div style="background-color: #f9fafb; border-radius: 8px; padding: 25px; margin-bottom: 30px;">
+              <h3 style="color: #374151; font-size: 20px; margin: 0 0 20px 0;">👤 Informations client</h3>
+
+              <div style="display: flex; margin-bottom: 15px;">
+                <span style="color: #6b7280; width: 120px; display: inline-block;">Nom :</span>
+                <span style="color: #111827; font-weight: 600;">${escapeHtml(customerName)}</span>
+              </div>
+
+              <div style="display: flex; margin-bottom: 15px;">
+                <span style="color: #6b7280; width: 120px; display: inline-block;">Email :</span>
+                <span style="color: #111827; font-weight: 600;"><a href="mailto:${escapeHtml(customerEmail)}" style="color: #10b981; text-decoration: none;">${escapeHtml(customerEmail)}</a></span>
+              </div>
+
+              <div style="display: flex; margin-bottom: 15px;">
+                <span style="color: #6b7280; width: 120px; display: inline-block;">Date réservation :</span>
+                <span style="color: #111827; font-weight: 600;">${new Date().toLocaleString('fr-FR')}</span>
+              </div>
+            </div>
+
+            <!-- Détails du cours -->
+            <div style="background-color: #ecfdf5; border-radius: 8px; padding: 25px; margin-bottom: 30px;">
+              <h3 style="color: #374151; font-size: 20px; margin: 0 0 20px 0;">📅 Détails du cours réservé</h3>
+
+              <div style="display: flex; margin-bottom: 15px;">
+                <span style="color: #6b7280; width: 120px; display: inline-block;">Cours :</span>
+                <span style="color: #111827; font-weight: 600;">${escapeHtml(courseInfo.type)}</span>
+              </div>
+
+              <div style="display: flex; margin-bottom: 15px;">
+                <span style="color: #6b7280; width: 120px; display: inline-block;">Date :</span>
+                <span style="color: #111827; font-weight: 600;">${escapeHtml(courseInfo.day)} ${escapeHtml(courseInfo.date)}</span>
+              </div>
+
+              <div style="display: flex; margin-bottom: 15px;">
+                <span style="color: #6b7280; width: 120px; display: inline-block;">Horaire :</span>
+                <span style="color: #111827; font-weight: 600;">${escapeHtml(courseInfo.time)}</span>
+              </div>
+
+              <div style="display: flex; margin-bottom: 15px;">
+                <span style="color: #6b7280; width: 120px; display: inline-block;">Lieu :</span>
+                <span style="color: #111827; font-weight: 600;">25 rue Beccaria, 75012 Paris - Studio Maison Née</span>
+              </div>
+
+              <div style="display: flex; margin-bottom: 15px;">
+                <span style="color: #6b7280; width: 120px; display: inline-block;">Montant :</span>
+                <span style="color: #059669; font-weight: 700; font-size: 18px;">${courseInfo.amount}€</span>
+              </div>
+            </div>
+
+            <!-- Actions rapides -->
+            <div style="background-color: #fffbeb; border-radius: 8px; padding: 20px; margin-bottom: 30px;">
+              <h4 style="color: #92400e; font-size: 16px; margin: 0 0 15px 0;">⚡ Actions rapides</h4>
+              <p style="color: #78350f; margin: 0 0 10px 0;">
+                • <a href="mailto:${escapeHtml(customerEmail)}" style="color: #10b981; text-decoration: none;">Contacter le client</a>
+              </p>
+              <p style="color: #78350f; margin: 0;">
+                • Vérifier la liste des participants pour ce cours
+              </p>
+            </div>
+
+            <!-- Footer -->
+            <div style="text-align: center; margin-top: 40px; padding-top: 20px; border-top: 1px solid #e5e7eb;">
+              <p style="color: #9ca3af; font-size: 12px; margin: 0;">
+                Numéro de transaction : ${sessionId}
+              </p>
+              <p style="color: #9ca3af; font-size: 12px; margin: 10px 0 0 0;">
+                Email automatique - Système de réservation Devi Yoga Paris
+              </p>
+            </div>
+
+          </div>
+        </body>
+        </html>
+      `,
+    });
+
+  } catch (error: unknown) {
+    const apiError = error as ApiError;
+    console.error('❌ Erreur envoi email administrateur:', apiError.message);
     throw error;
   }
 }
