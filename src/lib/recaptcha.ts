@@ -1,4 +1,4 @@
-// Validation Google reCAPTCHA côté serveur
+// Validation Google reCAPTCHA côté serveur.
 export async function verifyRecaptchaToken(token: string): Promise<boolean> {
   const secretKey = process.env.RECAPTCHA_SECRET_KEY;
   
