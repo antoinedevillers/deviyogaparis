@@ -207,7 +207,7 @@ export default function Page() {
       <div id="planning"></div>
       {/*<WeeklyPlanning />*/}
       {/* FAQ */}
-      {/* <Section id="faq" bg="bg-white">
+      {/* <Section id="faq" bg="bg-whitee">
         <H2 kicker="Questions fréquentes">FAQ</H2>
         <div className="grid md:grid-cols-2 gap-6">
           {[
