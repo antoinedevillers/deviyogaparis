@@ -205,7 +205,7 @@ export default function Page() {
       </Section>
       {/* Planning */}
       <div id="planning"></div>
-      <WeeklyPlanning />
+      {/*<WeeklyPlanning />*/}
       {/* FAQ */}
       {/* <Section id="faq" bg="bg-white">
         <H2 kicker="Questions fréquentes">FAQ</H2>
